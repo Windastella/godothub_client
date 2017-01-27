@@ -110,4 +110,4 @@ Triggered when a client left the channel.
 
 Triggered when a common data arrived.
 
-`data` The receieved data.
+`data` The received data.
