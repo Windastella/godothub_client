@@ -10,7 +10,7 @@ The main idea of GodotHub is to have a thin server that only handle the connecti
 
 ## Implementation
 
-The class for the client is in scripts/godothub.gd . Copy it and load it into your game through script.
+The class for the client is in scripts/godothub.gd . Copy and load it into your game through script.
 
 
 ```
@@ -66,7 +66,7 @@ Return: boolean
 
 ` obj.change_channel(channel) `
 
-Leave current channel and Join new channel. Creating new channel if the channel is does not exist yet.
+Leave current channel and Join new channel. Creating new channel if the channel does not exist yet.
 
 `channel` lobby you are changing to.
 
@@ -96,11 +96,15 @@ Triggered if listen successful.
 
 #### join(id)
 
-Triggered when new client joined the channel. `id` is the id of the new client.
+Triggered when new client joined the channel.
+
+`id` is the id of the new client.
 
 #### left(id)
 
-Triggered when a client left the channel. `id` is the id of the leaving client.
+Triggered when a client left the channel.
+
+`id` is the id of the leaving client.
 
 #### message(data)
 
