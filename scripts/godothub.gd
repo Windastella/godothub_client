@@ -30,8 +30,6 @@ func _init(serverport = 5000, serverhost = '127.0.0.1', serverchannel= "global",
 	var err = conn.listen(listenport)
 	if err:
 		emit_signal("error", err)
-		
-	emit_signal("listening")
 	
 	conn.set_send_address(server.host,server.port)
 	send_data({event="connecting"})
@@ -72,6 +70,22 @@ func get_data():#As dictionary
 	var dict = {}
 	dict.parse_json(data)
 	return dict
+	
+func broadcast_data(data): #Only accept dictionary
+	var dat = {event="broadcast"}
+	dat.data = data
+	send_data(dat)
+	
+func multicast_data(data): #Only accept dictionary
+	var dat = {event="multicast"}
+	dat.data = data
+	send_data(dat)
+	
+func unicast_data(data, clientID): #Only accept dictionary
+	var dat = {event="unicast"}
+	dat.data = data
+	dat.ID = clientID
+	send_data(dat)
 	
 func send_data(data): #Only accept dictionary
 	client.data = data

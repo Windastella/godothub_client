@@ -1,4 +1,4 @@
-# GodotHub Godot Implementation
+# Godot GodotHub Class API
 
 Multiplayer and network messaging Server for Godot.
 
