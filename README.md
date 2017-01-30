@@ -70,13 +70,31 @@ Leave current channel and Join new channel. Creating new channel if the channel 
 
 `channel` lobby you are changing to.
 
-#### .send_data
+#### .broadcast
 
-` obj.send_data(data) `
+` obj.broadcast(data) `
 
-Send data to the server.
+Send data to the server and all clients.
 
 `data` The data are formatted into JSON format.
+
+#### .multicast
+
+` obj.multicast(data) `
+
+Send data to the server and all client in current channel.
+
+`data` The data are formatted into JSON format.
+
+#### .unicast
+
+` obj.unicast(data, ID) `
+
+Send data to the server and to specified client.
+
+`data` The data are formatted into JSON format.
+
+`ID` The ID of targeted client.
 
 #### .disconnect
 
@@ -90,9 +108,9 @@ Disconnect from server.
 
 Triggered when connection return error.
 
-#### listening
+#### connected
 
-Triggered if listen successful.
+Triggered if connection successful.
 
 #### join(id)
 
@@ -108,6 +126,6 @@ Triggered when a client left the channel.
 
 #### message(data)
 
-Triggered when a common data arrived.
+Triggered when data arrived.
 
 `data` Data is dictionary.
