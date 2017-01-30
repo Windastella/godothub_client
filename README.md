@@ -128,4 +128,4 @@ Triggered when a client left the channel.
 
 Triggered when data arrived.
 
-`data` Data is dictionary.
+`data` The received data.
