@@ -4,6 +4,7 @@
 
 signal error(err) # Declare signals
 signal listening
+signal connected
 signal join(id)
 signal left(id)
 signal message(data)
@@ -43,7 +44,7 @@ func is_listening():
 		var data = get_data()
 		
 		if data.event == "connected":
-			print("Connected as ",data.ID," to ",server.host,":",server.port)
+			emit_signal("connected")
 			client.ID = data.ID
 			return
 			
