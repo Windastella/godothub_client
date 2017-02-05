@@ -8,6 +8,7 @@ signal connected
 signal join(id)
 signal left(id)
 signal message(data)
+signal ping(ping)
 
 var conn
 
@@ -34,7 +35,7 @@ func _init(serverport = 5000, serverhost = '127.0.0.1', serverchannel= "global",
 	conn.set_send_address(server.host,server.port)
 	send_data({event="connecting"})
 	
-func is_listening():
+func is_listening(dt):
 	if !conn.is_listening():
 		return false
 	
@@ -54,11 +55,19 @@ func is_listening():
 			emit_signal("left", data.ID)#join signal when data is received
 			return
 			
+		if data.event == "ping":
+			var ping = clamp((dt - data.data)*1000, 0, 10000)
+			ping = round(ping)
+			emit_signal("ping",ping)
+			return 
 		emit_signal("message",data)#message signal when data is received
 		
 func change_channel(channel):
 	client.channel = channel
 	send_data({event="channel"})
+	
+func ping(dt):
+	send_data({event="ping", data=dt})
 	
 func data_available():
 	if conn.get_available_packet_count() > 0:
