@@ -35,7 +35,7 @@ func _init(serverport = 5000, serverhost = '127.0.0.1', serverchannel= "global",
 	conn.set_send_address(server.host,server.port)
 	send_data({event="connecting"})
 	
-func is_listening(dt):
+func is_listening():
 	if !conn.is_listening():
 		return false
 	
@@ -66,7 +66,7 @@ func change_channel(channel):
 	client.channel = channel
 	send_data({event="channel"})
 	
-func ping(dt):
+func ping():
 	send_data({event="ping", data=OS.get_ticks_msec()})
 	
 func data_available():
