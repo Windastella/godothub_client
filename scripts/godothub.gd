@@ -56,7 +56,7 @@ func is_listening(dt):
 			return
 			
 		if data.event == "ping":
-			var ping = clamp((dt - data.data)*1000, 0, 10000)
+			var ping = OS.get_ticks_msec() - data.data
 			ping = round(ping)
 			emit_signal("ping",ping)
 			return 
@@ -67,7 +67,7 @@ func change_channel(channel):
 	send_data({event="channel"})
 	
 func ping(dt):
-	send_data({event="ping", data=dt})
+	send_data({event="ping", data=OS.get_ticks_msec()})
 	
 func data_available():
 	if conn.get_available_packet_count() > 0:
