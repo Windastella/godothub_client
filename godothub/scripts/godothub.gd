@@ -1,9 +1,10 @@
 # GodotHub Client Class
 # Author: Nik Mirza
 # Email: nik96mirza[at]gmail.com
+class_name GodotHub
 
 signal error(err) # Declare signals
-signal listening
+#signal listening
 signal connected
 signal join(id)
 signal left(id)
@@ -28,17 +29,18 @@ func _init(serverport = 5000, serverhost = '127.0.0.1', serverchannel= "global",
 	client.channel = serverchannel
 	
 	conn = PacketPeerUDP.new()
+	conn.set_dest_address(server.host,server.port);
+	
 	var err = conn.listen(listenport)
 	if err:
 		emit_signal("error", err)
-	
-	conn.set_send_address(server.host,server.port)
+		
 	send_data({event="connecting"})
 	
 func is_listening():
 	if !conn.is_listening():
 		return false
-	
+		
 	if data_available():
 		var data = get_data()
 		
@@ -70,27 +72,25 @@ func ping():
 	send_data({event="ping", data=OS.get_ticks_msec()})
 	
 func data_available():
-	if conn.get_available_packet_count() > 0:
-		return true
-	return false
+	return conn.get_available_packet_count() > 0
 	
 func get_data():#As dictionary
 	var data = conn.get_var()
 	var dict = {}
-	dict.parse_json(data)
+	dict = JSON.parse(data).result
 	return dict
 	
-func broadcast_data(data): #Only accept dictionary
+func gd_broadcast(data): #Only accept dictionary
 	var dat = {event="broadcast"}
 	dat.data = data
 	send_data(dat)
 	
-func multicast_data(data): #Only accept dictionary
+func gd_multicast(data): #Only accept dictionary
 	var dat = {event="multicast"}
 	dat.data = data
 	send_data(dat)
 	
-func unicast_data(data, clientID): #Only accept dictionary
+func gd_unicast(data, clientID): #Only accept dictionary
 	var dat = {event="unicast"}
 	dat.data = data
 	dat.ID = clientID
@@ -98,8 +98,8 @@ func unicast_data(data, clientID): #Only accept dictionary
 	
 func send_data(data): #Only accept dictionary
 	client.data = data
-	conn.put_var(client.to_json())
+	conn.put_var(JSON.print(client))
 		
-func disconnect():
+func gd_disconnect():
 	send_data({event="disconnect"})
 	conn.close()

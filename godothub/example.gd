@@ -1,9 +1,6 @@
 extends Node
 
-export(int) var arr = []
-
-onready var godothub = preload('scripts/godothub.gd')
-onready var conn = godothub.new()
+onready var conn = GodotHub.new()
 
 func _ready():
 	set_process(true)
@@ -40,4 +37,4 @@ func _on_receive(data):
 	print("Receive Data: ",data)
 	
 func _exit_tree():
-	conn.disconnect()
+	conn.gd_disconnect()
