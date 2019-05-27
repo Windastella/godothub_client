@@ -96,9 +96,9 @@ Send data to the server and to specified client.
 
 `ID` The ID of targeted client.
 
-#### .disconnect
+#### .disconnect_server
 
-` obj.disconnect() `
+` obj.disconnect_server() `
 
 Disconnect from server.
 

@@ -80,17 +80,17 @@ func get_data():#As dictionary
 	dict = JSON.parse(data).result
 	return dict
 	
-func gd_broadcast(data): #Only accept dictionary
+func broadcast(data): #Only accept dictionary
 	var dat = {event="broadcast"}
 	dat.data = data
 	send_data(dat)
 	
-func gd_multicast(data): #Only accept dictionary
+func multicast(data): #Only accept dictionary
 	var dat = {event="multicast"}
 	dat.data = data
 	send_data(dat)
 	
-func gd_unicast(data, clientID): #Only accept dictionary
+func unicast(data, clientID): #Only accept dictionary
 	var dat = {event="unicast"}
 	dat.data = data
 	dat.ID = clientID
@@ -100,6 +100,6 @@ func send_data(data): #Only accept dictionary
 	client.data = data
 	conn.put_var(JSON.print(client))
 		
-func gd_disconnect():
+func disconnect_server():
 	send_data({event="disconnect"})
 	conn.close()

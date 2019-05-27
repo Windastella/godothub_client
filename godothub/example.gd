@@ -37,4 +37,4 @@ func _on_receive(data):
 	print("Receive Data: ",data)
 	
 func _exit_tree():
-	conn.gd_disconnect()
+	conn.disconnect_server()
