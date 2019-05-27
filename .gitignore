@@ -1,2 +1,8 @@
 # .Build file
 .fuse_*
+
+# Engine file
+engine.cfg
+icon.png
+icon.png.flags
+main.scn
