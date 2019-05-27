@@ -1,8 +1,8 @@
-# .Build file
-.fuse_*
+# Ignore everything
+*
 
-# Engine file
-engine.cfg
-icon.png
-icon.png.flags
-main.scn
+# But not these files
+!godothub
+!.gitignore
+!LICENSE
+!README.md
