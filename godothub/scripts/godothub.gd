@@ -50,7 +50,8 @@ func is_listening():
 			return
 			
 		if data.event == "join":
-			emit_signal("join", data.ID)#join signal when data is received
+			unicast({event="join",msg=client.ID+" join the channel",ID=client.ID},data.ID)#send join to newly joined client
+			emit_signal("join", data.ID)# join signal when data is received
 			return
 			
 		if data.event == "left":
