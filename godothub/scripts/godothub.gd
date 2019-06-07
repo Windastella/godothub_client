@@ -31,9 +31,14 @@ func _init(serverport = 5000, serverhost = '127.0.0.1', serverchannel= "global",
 	conn = PacketPeerUDP.new()
 	conn.set_dest_address(server.host,server.port);
 	
-	var err = conn.listen(listenport)
-	if err:
-		emit_signal("error", err)
+	var err
+	while err:
+		err = conn.listen(listenport)
+		if err:
+			listenport += 1;
+			emit_signal("error", err)
+			continue
+		break;
 		
 	send_data({event="connecting"})
 	
@@ -43,32 +48,39 @@ func is_listening():
 		
 	if data_available():
 		var data = get_data()
-		
-		if data.event == "connected":
-			client.ID = data.ID
-			emit_signal("connected")
-			return
+
+		match data.event:
+			"connected":
+				client.ID = data.ID
+				emit_signal("connected")
+				return
 			
-		if data.event == "join":
-			unicast({event="join",msg=String(client.ID)+" join the channel",ID=client.ID},data.ID)#send join to newly joined client
-			emit_signal("join", data)# join signal when data is received
-			return
+			"join":
+				unicast({event="join",msg=String(client.ID)+" join the channel",ID=client.ID},data.ID)#send join to newly joined client
+				emit_signal("join", data)# join signal when data is received
+				return
 			
-		if data.event == "left":
-			emit_signal("left", data)#left signal when data is received
-			return
-			
-		if data.event == "ping":
-			var ping = OS.get_ticks_msec() - data.data
-			ping = round(ping)
-			emit_signal("ping",ping)
-			return
-			
-		emit_signal("message",data)#message signal when data is received
+			"left":
+				emit_signal("left", data)#left signal when data is received
+				return
+				
+			"ping":
+				var ping = OS.get_ticks_msec() - data.data
+				ping = round(ping)
+				emit_signal("ping",ping)
+				return
+			_:
+				if(data.data.event == "join"):
+					print("here",data);
+					emit_signal("join", data.data);
+				else:
+					emit_signal("message",data.data)#message signal when data is received
 		
 func change_channel(channel):
 	client.channel = channel
-	send_data({event="channel"})
+	var dat = { event = "channel"};
+	dat.data = { ID = client.ID, channel = channel };
+	send_data(dat);
 	
 func ping():
 	send_data({event="ping", data=OS.get_ticks_msec()})
@@ -85,11 +97,13 @@ func get_data():#As dictionary
 func broadcast(data): #Only accept dictionary
 	var dat = {event="broadcast"}
 	dat.data = data
+	dat.ID = client.ID
 	send_data(dat)
 	
 func multicast(data): #Only accept dictionary
 	var dat = {event="multicast"}
 	dat.data = data
+	dat.ID = client.ID
 	send_data(dat)
 	
 func unicast(data, clientID): #Only accept dictionary
