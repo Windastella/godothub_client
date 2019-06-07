@@ -45,24 +45,25 @@ func is_listening():
 		var data = get_data()
 		
 		if data.event == "connected":
-			emit_signal("connected")
 			client.ID = data.ID
+			emit_signal("connected")
 			return
 			
 		if data.event == "join":
-			unicast({event="join",msg=client.ID+" join the channel",ID=client.ID},data.ID)#send join to newly joined client
-			emit_signal("join", data.ID)# join signal when data is received
+			unicast({event="join",msg=String(client.ID)+" join the channel",ID=client.ID},data.ID)#send join to newly joined client
+			emit_signal("join", data)# join signal when data is received
 			return
 			
 		if data.event == "left":
-			emit_signal("left", data.ID)#join signal when data is received
+			emit_signal("left", data)#left signal when data is received
 			return
 			
 		if data.event == "ping":
 			var ping = OS.get_ticks_msec() - data.data
 			ping = round(ping)
 			emit_signal("ping",ping)
-			return 
+			return
+			
 		emit_signal("message",data)#message signal when data is received
 		
 func change_channel(channel):
