@@ -57,11 +57,11 @@ func is_listening():
 			
 			"join":
 				unicast({event="join",msg=String(client.ID)+" join the channel",ID=client.ID},data.ID)#send join to newly joined client
-				emit_signal("join", data)# join signal when data is received
+				emit_signal("join", data.ID)# join signal when data is received
 				return
 			
 			"left":
-				emit_signal("left", data)#left signal when data is received
+				emit_signal("left", data.ID)#left signal when data is received
 				return
 				
 			"ping":
@@ -71,8 +71,7 @@ func is_listening():
 				return
 			_:
 				if(data.data.event == "join"):
-					print("here",data);
-					emit_signal("join", data.data);
+					emit_signal("join", data.data.ID);
 				else:
 					emit_signal("message",data.data)#message signal when data is received
 		
